@@ -92,11 +92,9 @@ class YipitDeals(object):
     
     def build_deals_url(self):
         """Construct URL with get params"""
-        print self.params
         url = self.yipit_api_url + self.deals_resource_path
         self.params['key'] = self.api_key
         url += '?' + urllib.urlencode(self.params)
-        print url
         return url
     
     def get_contents(self, url):
