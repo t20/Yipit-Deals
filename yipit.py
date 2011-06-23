@@ -23,7 +23,7 @@ class YipitDeals(object):
                     self.params[key] = value
             else:
                 print 'Skipping', arg
-    
+
     def validate_input(self, key, value):
         """Check for valid input params"""
         valid_params = {
@@ -64,7 +64,6 @@ class YipitDeals(object):
                 'maxlen' : 4
                 }
             }
-        
         if key in valid_params.keys():
             data_type = valid_params[key]['data_type']
             if data_type == 'float':
@@ -84,19 +83,18 @@ class YipitDeals(object):
             maxlen = valid_params[key]['maxlen']
             if len(value) > maxlen:
                 return False
-            return True #Validation Complete
+            return True  # Validation Complete
         else:
             print 'Invalid param', key
             return False
-            
-    
+
     def build_deals_url(self):
         """Construct URL with get params"""
         url = self.yipit_api_url + self.deals_resource_path
         self.params['key'] = self.api_key
         url += '?' + urllib.urlencode(self.params)
         return url
-    
+
     def get_contents(self, url):
         """Make the actual API call"""
         req = urllib2.Request(url)
@@ -106,13 +104,13 @@ class YipitDeals(object):
         except urllib2.URLError, (err):
             print "URL error(%s)" % (err)
             return None
-    
+
     def parse_output(self, json_string):
         """Parse API json response"""
         deals = json.loads(json_string)
         return deals['response']['deals']
         #check for meta here?
-    
+
     def show_deals(self, deals):
         """Pretty output"""
         if deals:
@@ -120,7 +118,7 @@ class YipitDeals(object):
                 print deal['title']
         else:
             print 'No deals found'
-    
+
     def main(self, args):
         """Actual process"""
         self.parse_inputs(args)
@@ -129,7 +127,8 @@ class YipitDeals(object):
         if response:
             deals = self.parse_output(response)
             self.show_deals(deals)
-    
+            return deals
+
 if __name__ == '__main__':
     y = YipitDeals()
     y.main(sys.argv[1:])
